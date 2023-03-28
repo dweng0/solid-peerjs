@@ -18,7 +18,6 @@ export interface PeerNode {
   dataService: PeerDataService;
   callService: PeerCallStreamService;
   error: Accessor<string>;
-  isConnected: Accessor<boolean>;
   peerReady: Accessor<boolean>;
   hostReady: Accessor<boolean>;
 }

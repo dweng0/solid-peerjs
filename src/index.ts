@@ -10,7 +10,6 @@ import { PeerNode } from './interface';
  */
 export const peerNode = (myId: string): PeerNode => {
   const [error, setError] = createSignal<string>('');
-  const [isConnected, setIsConnected] = createSignal<boolean>(false);
   const [peerReady, setPeerReady] = createSignal<boolean>(false);
   const [hostReady, setHostReady] = createSignal<boolean>(false);
 
@@ -32,7 +31,6 @@ export const peerNode = (myId: string): PeerNode => {
     dataService,
     callService,
     error,
-    isConnected,
     peerReady,
     hostReady,
   };
