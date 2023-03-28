@@ -85,7 +85,9 @@ export const peerDataStreamingService = (
       ) as DataConnection;
       resetDataEvent(dataConnection);
     } else {
-      warn('No id provided, resetting all data events and adding new one');
+      console.warn(
+        'No id provided, resetting all data events and adding new one'
+      );
       connectedConsumers().forEach(c => resetDataEvent(c));
     }
   };

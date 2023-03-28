@@ -48,7 +48,7 @@ export const peerCallStreamingService = (
 
   const onCallEvent = (call: MediaConnection) => {
     log(`Inbound call from ${call.peer}`);
-    setInboundStreams(streams => [
+    setInboundStreams((streams: CallStream[]) => [
       ...streams,
       { answered: false, connection: call, stream: null },
     ]);
