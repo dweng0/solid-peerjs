@@ -10,8 +10,6 @@ This project allows peers to connect to each other in a P2P fashion using PeerJS
 
 `error`: A property that contains the error message if any error occurs during the connection process.
 
-`isConnected`: A property that indicates whether the peer is currently connected to another peer.
-
 `peerReady`: A property that indicates whether the peer is ready to connect to another peer.
 
 `hostReady`: A property that indicates whether the peer is ready to act as a host and receive incoming connections.
