@@ -1,103 +1,69 @@
-# TSDX User Guide
+# Solid PeerJS P2P Connection Project
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+## Introduction
 
-> This TSDX setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
+This project allows peers to connect to each other in a P2P fashion using PeerJS library. The project exposes a simple interface for establishing a connection and exchanging data between peers. The interface consists of the following methods:
 
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
+`dataService`: A function that allows peers to send data to each other.
 
-## Commands
+`callService`: A function that allows peers to initiate a call with each other.
 
-TSDX scaffolds your new library inside `/src`.
+`error`: A property that contains the error message if any error occurs during the connection process.
 
-To run TSDX, use:
+`isConnected`: A property that indicates whether the peer is currently connected to another peer.
 
-```bash
-npm start # or yarn start
+`peerReady`: A property that indicates whether the peer is ready to connect to another peer.
+
+`hostReady`: A property that indicates whether the peer is ready to act as a host and receive incoming connections.
+
+## Getting Started
+
+To use this project, you need to install the SolidJS library and PeerJS library. PeerJS is installed as a dependency of this project, so you don't need to install it separately. You can install the SolidJS library using npm:
+
+```sh
+npm install solid-js
 ```
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
+Once you have installed the library, you can import it and create a peer node, only use what you need (only need data, just pull the data service in, want to make calls? use the call service, etc.)
 
-To do a one-off build, use `npm run build` or `yarn build`.
+```javascript
+import { createSignal, createEffect } from 'solid-js';
+import { peerNode } from './peerNode';
 
-To run tests, use `npm test` or `yarn test`.
+const myId = 'my-peer-id';
 
-## Configuration
+const {
+  dataService,
+  callService,
+  error,
+  isConnected,
+  peerReady,
+  hostReady,
+} = peerNode(myId);
 
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
+createEffect(() => {
+  if (peerReady() && !hostReady()) {
+    console.log('Peer ready to connect to other peers.');
+  }
+});
 
-### Jest
+createEffect(() => {
+  if (hostReady()) {
+    console.log('Peer ready to act as a host.');
+  }
+});
 
-Jest tests are set up to run with `npm test` or `yarn test`.
+callService.onCall(call => {
+  // handle incoming call
+});
 
-### Bundle Analysis
-
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
+dataService.onData(data => {
+  // handle incoming data
+});
 ```
 
-### Rollup
+The peerNode function returns an object that contains the methods and properties of the peer node. You can use these methods and properties to establish a connection and exchange data with other peers.
 
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
+## License
 
-### TypeScript
-
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
-
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
-}
-```
-
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
-
-## Module Formats
-
-CJS, ESModules, and UMD module formats are supported.
-
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
-
-## Named Exports
-
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
-
-## Including Styles
-
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
-
-## Publishing to NPM
-
-We recommend using [np](https://github.com/sindresorhus/np).
+This project is licensed under the MIT License.
